@@ -82,7 +82,7 @@ def percolation_graph(graph, spanning_cluster=True):
     if spanning_cluster:
         perc_graph = graph.subgraph(
             [
-                node for node in graph.nodes_iter()
+                node for node in graph.nodes()
                 if 'span' not in graph.node[node]
             ]
         )
@@ -233,7 +233,7 @@ def sample_states(
     if spanning_cluster:
         perc_graph = graph.subgraph(
             [
-                node for node in graph.nodes_iter()
+                node for node in graph.nodes()
                 if 'span' not in graph.node[node]
             ]
         )
@@ -292,7 +292,8 @@ def sample_states(
         ]
 
     # get first node
-    max_cluster_root = next(perc_graph.nodes_iter())
+    iterable_nodes = iter(perc_graph.nodes())
+    max_cluster_root = next(iterable_nodes)
 
     # loop over all edges (n == 1..M)
     for n in range(num_edges):
@@ -300,7 +301,7 @@ def sample_states(
 
         # draw new edge from permutation
         edge_index = perm_edges[n]
-        edge = perc_edges[edge_index]
+        edge = list(perc_edges)[edge_index]
         ret['edge'] = edge
 
         # find roots and weights
